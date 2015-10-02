@@ -212,5 +212,3 @@ CREATE TABLE detalhe_cancelamento(
 	dt_cancelamento DATE
 )
 
-INSERT INTO 
-

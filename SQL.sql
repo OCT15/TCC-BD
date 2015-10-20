@@ -51,17 +51,10 @@ GO
 	
 CREATE TABLE lugar(
 	id_lugar INT PRIMARY KEY,
+	nome_lugar VARCHAR(20),
 	endereco VARCHAR(100),
 	cep CHAR(9),
 	qnt_max INT
-)
-GO
-
-CREATE TABLE evento(
-	id_evento INT PRIMARY KEY,
-	dt_evento DATE,
-	hr_inicio CHAR(8),
-	acrescimos DECIMAL(7,2)
 )
 GO
 
@@ -71,12 +64,6 @@ CREATE TABLE produto(
 	preço DECIMAL(6,2),
 	quantidade INT,
 	tipo_produto VARCHAR(20)
-)
-GO
-
-CREATE TABLE pratos_evento(
-	id_pratos_evento INT PRIMARY KEY,
-	id_produto INT FOREIGN KEY REFERENCES produto(id_produto)
 )
 GO
 
@@ -163,15 +150,16 @@ GO
 
 CREATE TABLE pacote(
 	id_pacote INT PRIMARY KEY,
+	nome VARCHAR(25),
+	decoracao VARCHAR(200),
 )
 GO
 
+
 CREATE TABLE produto_pacote(
-	id_produto_pacote INT PRIMARY KEY,
-	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	id_pacote INT FOREIGN KEY REFERENCES pacote(id_pacote),
-	qnt_produto_pacote_unitario INT,
-	decoracao VARCHAR(200)
+	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
+	qnt_produto INT
 )
 GO
 
@@ -183,41 +171,48 @@ CREATE TABLE contas(
 	cod_conta VARCHAR(50)
 )
 GO
-	
-CREATE TABLE detalhe_orcamento(
-	id_detalhe_orcamento INT PRIMARY KEY,
-	id_cliente INT FOREIGN KEY REFERENCES cliente(id_cliente),
-	valor_orcamento DECIMAL(7,2),
-	num_convidados INT,
-	dt_evento DATE,
-	qnt_pratos INT,
-	tipo_prato INT,
-	local_evento VARCHAR(50),
-	tema VARCHAR(50),
-	email_cliente VARCHAR(254),
-	dt_orcamento DATE
-)
-GO
 
+	
 CREATE TABLE orcamento(
 	id_orcamento INT PRIMARY KEY,
-	id_detalhe_orcamento INT FOREIGN KEY REFERENCES detalhe_orcamento(id_detalhe_orcamento),
 	id_lugar INT FOREIGN KEY REFERENCES lugar(id_lugar),
-	id_evento INT FOREIGN KEY REFERENCES evento(id_evento),
-	id_pratos_evento INT FOREIGN KEY REFERENCES pratos_evento(id_pratos_evento),
 	id_cliente INT FOREIGN KEY REFERENCES cliente(id_cliente),
-	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	id_permissao INT FOREIGN KEY REFERENCES permissao(id_permissao),
 	id_funcionario INT FOREIGN KEY REFERENCES funcionario(id_funcionario),
 	valor_orcamento DECIMAL(7,2),
 	num_convidados INT,
 	dt_evento DATE,
 	qnt_pratos INT,
-	tipo_prato INT,
 	local_evento VARCHAR(50),
 	tema VARCHAR(50),
 	email_cliente VARCHAR(254),
-	dt_orcamento DATE
+	dt_orcamento DATE,
+	hr_inicio TIME
+)
+GO
+
+CREATE TABLE pratos_evento(
+	id_orcamento INT FOREIGN KEY REFERENCES orcamento(id_orcamento),
+	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
+	qtd_produto INT
+)
+GO
+
+CREATE TABLE evento(
+	id_evento INT PRIMARY KEY,
+	id_lugar INT FOREIGN KEY REFERENCES lugar(id_lugar),
+	id_cliente INT FOREIGN KEY REFERENCES cliente(id_cliente),
+	id_permissao INT FOREIGN KEY REFERENCES permissao(id_permissao),
+	id_funcionario INT FOREIGN KEY REFERENCES funcionario(id_funcionario),
+	valor_orcamento DECIMAL(7,2),
+	num_convidados INT,
+	dt_evento DATE,
+	qnt_pratos INT,
+	local_evento VARCHAR(50),
+	tema VARCHAR(50),
+	email_cliente VARCHAR(254),
+	dt_orcamento DATE,
+	hr_inicio TIME
 )
 GO
 
@@ -270,21 +265,9 @@ INSERT INTO funcionario(id_funcionario, id_permissao, nome, senha, dt_nascim, en
 (9, 3, 'Moisés', '123', '22/03/1991', 'Rua ijk', '(11)3390-0929', '(11)91822-8939', '19288-192', '783.939.376-48', 'moises@abc.com'),
 (10, 3, 'Cíntia', '123', '28/01/1972', 'Rua jkl', '(11)3902-0929', '(11)95988-1178', '29389-837', '128.721.472-17', 'cintia@abc.com')
 
-INSERT INTO lugar(id_lugar, endereco, cep, qnt_max) VALUES
-(1, 'Rua aaa', '09383-039', 2000),
-(2, 'Rua bbb', '28989-299', 800)
-
-INSERT INTO evento(id_evento, dt_evento, hr_inicio) VALUES
-(1, '12/12/2015', '19:00:00'),
-(2, '20/12/2015', '20:00:00'),
-(3, '18/11/2015', '18:00:00'),
-(4, '29/12/2015', '22:00:00'),
-(5, '01/12/2015', '21:00:00'),
-(6, '24/12/2015', '22:00:00'),
-(7, '29/11/2015', '20:00:00'),
-(8, '10/12/2015', '17:00:00'),
-(9, '27/11/2015', '19:00:00'),
-(10, '03/12/2015', '19:30:00')
+INSERT INTO lugar(id_lugar, nome_lugar, endereco, cep, qnt_max) VALUES
+(1, 'Chácara', 'Rua aaa', '09383-039', 2000),
+(2, 'Salão', 'Rua bbb', '28989-299', 800)
 
 INSERT INTO produto(id_produto, nm_produto, preço, quantidade, tipo_produto) VALUES
 (1, 'Pastel', 1.40, 1000, 'perecivel'),
@@ -293,28 +276,28 @@ INSERT INTO produto(id_produto, nm_produto, preço, quantidade, tipo_produto) VA
 (4, 'Mini-pizza', 0.78, 1000, 'perecivel'),
 (5, 'Pipoca', 1.20, 1000, 'perecivel'),
 (6, 'Hot dog', 1.60, 1000, 'perecivel'),
-(7, 'Croquete', 1.1, 1000, 'perecivel'),
-(8, 'Empadinha', 1.1, 1000, 'perecivel'),
-(9, 'Brigadeiro', 1.1, 1000, 'perecivel'),
-(10, 'Pé-de-moleque', 1.1, 1000, 'perecivel'),
-(11, 'Beijinho', 1.1, 1000, 'perecivel'),
-(12, 'Bala de côco', 1.1, 1000, 'perecivel'),
-(13, 'Sorvete', 1.1, 1000, 'perecivel'),
-(14, 'Torta de chocolate', 1.1, 1000, 'perecivel'),
-(15, 'Torta de morango', 1.1, 1000, 'perecivel'),
-(16, 'Pavê', 1.1, 1000, 'perecivel'),
-(17, 'Água', 1.1, 1000, 'perecivel'),
-(18, 'Refrigerante', 1.1, 1000, 'perecivel'),
-(19, 'Suco', 1.1, 1000, 'perecivel'),
-(20, 'Cerveja', 1.1, 1000, 'perecivel'),
+(7, 'Croquete', 0.16, 1000, 'perecivel'),
+(8, 'Empadinha', 1.16, 1000, 'perecivel'),
+(9, 'Brigadeiro', 0.10, 1000, 'perecivel'),
+(10, 'Pé-de-moleque', 0.10, 1000, 'perecivel'),
+(11, 'Beijinho', 0.10, 1000, 'perecivel'),
+(12, 'Bala de côco', 0.05, 1000, 'perecivel'),
+(13, 'Sorvete', 1.20, 1000, 'perecivel'),
+(14, 'Torta de chocolate', 1.00, 1000, 'perecivel'),
+(15, 'Torta de morango', 1.00, 1000, 'perecivel'),
+(16, 'Pavê', 1.50, 1000, 'perecivel'),
+(17, 'Água', 0.50, 1000, 'perecivel'),
+(18, 'Refrigerante', 1.00, 1000, 'perecivel'),
+(19, 'Suco', 1.00, 1000, 'perecivel'),
+(20, 'Cerveja', 1.00, 1000, 'perecivel'),
 (21, 'Vinho', 1.1, 1000, 'perecivel'),
 (22, 'Champagne', 1.1, 1000, 'perecivel'),
-(23, 'Pé-de-moleque', 1.1, 1000, 'perecivel'),
-(24, 'Centro de mesa', 1.1, 1000, 'consumivel'),
-(25, 'Enfeite de parede', 1.1, 1000, 'consumivel'),
-(26, 'Bexigas coloridas', 1.1, 1000, 'consumivel'),
+(23, 'Energético', 1.1, 1000, 'perecivel'),
+(24, 'Centro de mesa', 0.80, 1000, 'consumivel'),
+(25, 'Enfeite de parede', 3.00, 1000, 'consumivel'),
+(26, 'Bexigas coloridas', 0.10, 1000, 'consumivel'),
 (27, 'Decoração para mesa', 1.1, 1000, 'consumivel'),
-(28, 'Guardanapo', 1.1, 1000, 'consumivel'),
+(28, 'Guardanapo', 0.50, 1000, 'consumivel'),
 (29, 'Prato', 1.1, 1000, 'consumivel'),
 (30, 'Copo', 1.1, 1000, 'consumivel'),
 (31, 'Talher', 1.1, 1000, 'consumivel'),
@@ -324,18 +307,12 @@ INSERT INTO produto(id_produto, nm_produto, preço, quantidade, tipo_produto) VA
 (35, 'Flores', 1.1, 1000, 'consumivel'),
 (36, 'Lanterna', 1.1, 1000, 'consumivel'),
 (37, 'Glow sticks', 1.1, 1000, 'consumivel'),
-(38, 'Feijoada', 1.1, 300, 'perecivel'),
+(38, 'Feijoada', 1.1, 1000, 'perecivel'),
 (39, 'Escondidinho de queijo', 1.1, 1000, 'perecivel'),
 (40, 'Macarrão ao molho branco', 1.1, 1000, 'perecivel')
 
-INSERT INTO pratos_evento(id_pratos_evento, id_produto) VALUES
-(1, 38),
-(2, 39),
-(3, 40)
-
 INSERT INTO fornecedor_perecivel(id_fornecedor_perecivel, empresa, endereco, telefone, celular, cnpj, email, website, representante) VALUES
 (1, 'abc', 'Rua 123', '(11)5852-8565', '(11)95856-8457', '78.425.986/0036-15', 'abcd@abc.com', 'www.abc.com', 'Jorge')
-
 
 INSERT INTO pedido_perecivel(id_pedido_perecivel, id_fornecedor_perecivel, id_produto, nm_produto, qnt_produto, valor_produto, dt_pedido, dt_entrega, valor_pedido) VALUES
 (1, 1, 1, 'Pastel', 1000, 1, '10/12/2015', '20/12/2015', 1000),
@@ -360,7 +337,6 @@ INSERT INTO detalhe_pedido_perecivel(id_detalhe_pedido_perecivel, id_pedido_pere
 (8, 8, 1, 8, 'Empadinha', 1000, 1, '10/12/2015', '20/12/2015', 1000),
 (9, 9, 1, 9, 'Brigadeiro', 1000, 1, '10/12/2015', '20/12/2015', 1000),
 (10, 10, 1, 10, 'Pé-de-moleque', 1000, 1, '10/12/2015', '20/12/2015', 1000)
-
 
 INSERT INTO fornecedor_consumivel(id_fornecedor_consumivel, empresa, endereco, telefone, celular, cnpj, email, website, representante) VALUES
 (1, 'def', 'Rua 234', '(11)6549-2456', '(11)98755-8645', '32.365.542/0042-11', 'efjk@abc.com', 'www.def.com', 'Alberto') 
@@ -389,8 +365,64 @@ INSERT INTO detalhe_pedido_consumivel(id_detalhe_pedido_consumivel, id_pedido_co
 (9, 9, 1, 32, 'Toalha', 1000, 1, '10/12/2015', '20/12/2015', 1000),
 (10, 10, 1, 33, 'Cadeira', 1000, 1, '10/12/2015', '20/12/2015', 1000)
 
+INSERT INTO pacote(id_pacote, nome, decoracao) VALUES
+(1, 'Casamento', 'Casamento'),
+(2, 'Festa de criança', 'Infantil'),
+(3, 'Rave', 'Balada'),
+(4, 'Festa de 15 anos', '15 anos')
+
+INSERT INTO contas(id_conta, nm_conta, vencimento, valor_conta, cod_conta) VALUES
+(1, 'Luz', '30/12/2015', 1000.00, '52451224854125854878542158874582521598754821596542'),
+(2, 'Água', '30/12/2015', 1000.00, '52451254854125326548542158745874521598754821596542'),
+(3, 'Telefone/Internet', '30/12/2015', 2000.00, '78548751548962548521456985254965213654875215842365'),
+(4, 'Gás', '30/12/2015', 1000.00, '87548512546985236548541254875412896584857521569820')
+
+INSERT INTO orcamento(id_orcamento, id_lugar, id_cliente, id_funcionario, valor_orcamento, num_convidados, dt_evento, qnt_pratos, tema, email_cliente, dt_orcamento, hr_inicio) VALUES
+(1, 2, 2, 1, 15000.00, 300, '01/04/2016', 2, 'Festa de criança', 'abc@abc.com', '20/11/2015', '19:00:00'),
+(2, 1, 1, 1, 15000.00, 1500, '02/04/2016', 2, 'Casamento', 'abc@abc.com', '21/11/2015', '19:00:00'),
+(3, 1, 1, 1, 15000.00, 1000, '03/04/2016', 2, 'Casamento', 'abc@abc.com', '22/11/2015', '19:00:00'),
+(4, 2, 1, 1, 15000.00, 800, '04/04/2016', 2, 'Casamento', 'abc@abc.com', '23/11/2015', '19:00:00'),
+(5, 2, 2, 1, 15000.00, 500, '05/04/2016', 2, 'Festa de 15 anos', 'abc@abc.com', '24/11/2015', '19:00:00'),
+(6, 1, 3, 1, 15000.00, 1200, '06/04/2016', 2, 'Casamento', 'abc@abc.com', '25/11/2015', '19:00:00'),
+(7, 1, 1, 1, 15000.00, 1000, '07/04/2016', 2, 'Casamento', 'abc@abc.com', '26/11/2015', '19:00:00'),
+(8, 2, 2, 1, 15000.00, 800, '08/04/2016', 2, 'Festa de criança', 'abc@abc.com', '27/11/2015', '19:00:00'),
+(9, 2, 2, 1, 15000.00, 500, '09/04/2016', 2, 'Festa de criança', 'abc@abc.com', '28/11/2015', '19:00:00'),
+(10, 1, 1, 1, 15000.00, 1000, '10/04/2016', 2, 'Casamento', 'abc@abc.com', '29/11/2015', '19:00:00')
+
+
+INSERT INTO pratos_evento(id_orcamento, id_produto, qtd_produto) VALUES
+(1, 1, 100),
+(1, 2, 100),
+(2, 1, 100),
+(2, 2, 100),
+(3, 2, 100),
+(3, 3, 100),
+(4, 2, 100),
+(4, 5, 100),
+(5, 2, 100),
+(5, 4, 100),
+(6, 7, 100),
+(6, 8, 100),
+(7, 1, 100),
+(7, 2, 100),
+(8, 1, 100),
+(8, 4, 100),
+(9, 2, 100),
+(9, 3, 100),
+(10, 5, 100),
+(10, 6, 100)
+
+INSERT INTO evento(id_evento, id_lugar, id_cliente, id_funcionario, valor_orcamento, num_convidados, dt_evento, qnt_pratos, tema, email_cliente, dt_orcamento, hr_inicio) VALUES
+(1, 2, 2, 1, 15000.00, 300, '01/04/2016', 2, 'Festa de criança', 'abc@abc.com', '20/11/2015', '19:00:00'),
+(2, 1, 1, 1, 15000.00, 1500, '02/04/2016', 2, 'Casamento', 'abc@abc.com', '21/11/2015', '19:00:00'),
+(3, 1, 1, 1, 15000.00, 1000, '03/04/2016', 2, 'Casamento', 'abc@abc.com', '22/11/2015', '19:00:00'),
+(4, 2, 1, 1, 15000.00, 800, '04/04/2016', 2, 'Casamento', 'abc@abc.com', '23/11/2015', '19:00:00'),
+(5, 2, 2, 1, 15000.00, 500, '05/04/2016', 2, 'Festa de 15 anos', 'abc@abc.com', '24/11/2015', '19:00:00'),
+(6, 1, 3, 1, 15000.00, 1200, '06/04/2016', 2, 'Casamento', 'abc@abc.com', '25/11/2015', '19:00:00'),
+(7, 1, 1, 1, 15000.00, 1000, '07/04/2016', 2, 'Casamento', 'abc@abc.com', '26/11/2015', '19:00:00'),
+(8, 2, 2, 1, 15000.00, 800, '08/04/2016', 2, 'Festa de criança', 'abc@abc.com', '27/11/2015', '19:00:00'),
+(9, 2, 2, 1, 15000.00, 500, '09/04/2016', 2, 'Festa de criança', 'abc@abc.com', '28/11/2015', '19:00:00'),
+(10, 1, 1, 1, 15000.00, 1000, '10/04/2016', 2, 'Casamento', 'abc@abc.com', '29/11/2015', '19:00:00')
 
 
 SELECT * FROM produto
-
-SELECT * FROM evento 

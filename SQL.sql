@@ -23,6 +23,7 @@ CREATE TABLE cliente(
 	celular CHAR(14),--(00)90000-0000
 	cep CHAR(9), --00000-000
 	cpf CHAR(14), --000.000.000-00
+	rg CHAR(12), --00.000.000-0
 	email VARCHAR(254)
 )
 GO
@@ -45,6 +46,7 @@ CREATE TABLE funcionario(
 	celular CHAR(14),
 	cep CHAR(9),
 	cpf CHAR(14),
+	rg CHAR(12),
 	email VARCHAR(254)
 )
 GO
@@ -87,7 +89,7 @@ CREATE TABLE pedido_perecivel(
 	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	nm_produto VARCHAR(50),
 	qnt_produto INT,
-	valor_produto DECIMAL(7,2),
+	valor_produto DECIMAL(8,2),
 	dt_pedido DATE,
 	dt_entrega DATE,
 	valor_pedido DECIMAL(10,2)
@@ -101,7 +103,7 @@ CREATE TABLE detalhe_pedido_perecivel(
 	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	nm_produto VARCHAR(50),
 	qnt_produto INT,
-	valor_produto DECIMAL(7,2),
+	valor_produto DECIMAL(8,2),
 	dt_pedido DATE,
 	dt_entrega DATE,
 	valor_pedido DECIMAL(10,2)
@@ -127,7 +129,7 @@ CREATE TABLE pedido_consumivel(
 	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	nm_produto VARCHAR(50),
 	qnt_produto INT,
-	valor_produto DECIMAL(7,2),
+	valor_produto DECIMAL(8,2),
 	dt_pedido DATE,
 	dt_entrega DATE,
 	valor_pedido DECIMAL(10,2)
@@ -141,7 +143,7 @@ CREATE TABLE detalhe_pedido_consumivel(
 	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
 	nm_produto VARCHAR(50),
 	qnt_produto INT,
-	valor_produto DECIMAL(7,2),
+	valor_produto DECIMAL(8,2),
 	dt_pedido DATE,
 	dt_entrega DATE,
 	valor_pedido DECIMAL(10,2)
@@ -167,7 +169,7 @@ CREATE TABLE contas(
 	id_conta INT PRIMARY KEY,
 	nm_conta VARCHAR(20),
 	vencimento DATE,
-	valor_conta DECIMAL(7,2),
+	valor_conta DECIMAL(8,2),
 	cod_conta VARCHAR(50)
 )
 GO
@@ -179,7 +181,7 @@ CREATE TABLE orcamento(
 	id_cliente INT FOREIGN KEY REFERENCES cliente(id_cliente),
 	id_permissao INT FOREIGN KEY REFERENCES permissao(id_permissao),
 	id_funcionario INT FOREIGN KEY REFERENCES funcionario(id_funcionario),
-	valor_orcamento DECIMAL(7,2),
+	valor_orcamento DECIMAL(8,2),
 	num_convidados INT,
 	dt_evento DATE,
 	qnt_pratos INT,
@@ -204,7 +206,7 @@ CREATE TABLE evento(
 	id_cliente INT FOREIGN KEY REFERENCES cliente(id_cliente),
 	id_permissao INT FOREIGN KEY REFERENCES permissao(id_permissao),
 	id_funcionario INT FOREIGN KEY REFERENCES funcionario(id_funcionario),
-	valor_orcamento DECIMAL(7,2),
+	valor_orcamento DECIMAL(8,2),
 	num_convidados INT,
 	dt_evento DATE,
 	qnt_pratos INT,
@@ -236,34 +238,34 @@ INSERT INTO mensagem(id_mensagem, conteudo, dt_envio) VALUES
 (9, 'Olá, tudo bem?', '09/02/2015'),
 (10, 'Olá, tudo bem?', '10/02/2015')
 
-INSERT INTO cliente(id_cliente, nome, senha, dt_nascim, endereco, telefone, celular, cep, cpf, email) VALUES
-(1, 'João', '123', '09/07/1997', 'Rua 123', '(11)2345-8767', '(11)98378-3787', '28738-578', '122.443.165-09', 'abc@abc.com'),
-(2, 'Maria', '123', '09/07/1996', 'Rua 234', '(11)3542-8176', '(11)93847-1262', '18273-489', '129.187.938-37', 'bcd@abc.com'),
-(3, 'José', '123', '09/07/1995', 'Rua 345', '(11)3565-7887', '(11)92389-1287', '18273-190', '546.289.298-19', 'cde@abc.com'),
-(4, 'Irene', '123', '09/07/1994', 'Rua 456', '(11)1276-9189', '(11)90238-4562', '39384-083', '938.187.374-29', 'def@abc.com'),
-(5, 'Odete', '123', '09/07/1993', 'Rua 567', '(11)7368-3287', '(11)92030-0929', '56373-827', '198.378.218-90', 'efg@abc.com'),
-(6, 'Rosana', '123', '09/07/1992', 'Rua 678', '(11)2365-6739', '(11)92030-2877', '12728-278', '128.384.390-69', 'fgh@abc.com'),
-(7, 'Claudia', '123', '09/07/1991', 'Rua 789', '(11)3873-0098', '(11)93030-2787', '19283-467', '598.129.198-03', 'ghi@abc.com'),
-(8, 'Roberto', '123', '09/07/1990', 'Rua 890', '(11)3268-2837', '(11)91276-0939', '57839-128', '489.209.188-30', 'hij@abc.com'),
-(9, 'Robson', '123', '09/07/1989', 'Rua 901', '(11)2398-2398', '(11)92363-8399', '93847-938', '982.127.189-64', 'ijk@abc.com'),
-(10, 'Mário', '123', '09/07/1988', 'Rua 012', '(11)2099-2788', '(11)94673-1828', '17263-748', '289.489.093-90', 'jkl@abc.com')
+INSERT INTO cliente(id_cliente, nome, senha, dt_nascim, endereco, telefone, celular, cep, cpf, rg, email) VALUES
+(1, 'João', '123', '09/07/1997', 'Rua 123', '(11)2345-8767', '(11)98378-3787', '28738-578', '122.443.165-09', '11.586.854-8', 'abc@abc.com'),
+(2, 'Maria', '123', '09/07/1996', 'Rua 234', '(11)3542-8176', '(11)93847-1262', '18273-489', '129.187.938-37', '22.528.785-4', 'bcd@abc.com'),
+(3, 'José', '123', '09/07/1995', 'Rua 345', '(11)3565-7887', '(11)92389-1287', '18273-190', '546.289.298-19', '21.856.888-9', 'cde@abc.com'),
+(4, 'Irene', '123', '09/07/1994', 'Rua 456', '(11)1276-9189', '(11)90238-4562', '39384-083', '938.187.374-29', '30.856.745.5', 'def@abc.com'),
+(5, 'Odete', '123', '09/07/1993', 'Rua 567', '(11)7368-3287', '(11)92030-0929', '56373-827', '198.378.218-90', '50.958.758-4', 'efg@abc.com'),
+(6, 'Rosana', '123', '09/07/1992', 'Rua 678', '(11)2365-6739', '(11)92030-2877', '12728-278', '128.384.390-69', '19.875.953.3', 'fgh@abc.com'),
+(7, 'Claudia', '123', '09/07/1991', 'Rua 789', '(11)3873-0098', '(11)93030-2787', '19283-467', '598.129.198-03', '40.685.859-7', 'ghi@abc.com'),
+(8, 'Roberto', '123', '09/07/1990', 'Rua 890', '(11)3268-2837', '(11)91276-0939', '57839-128', '489.209.188-30', '32.956.859-6', 'hij@abc.com'),
+(9, 'Robson', '123', '09/07/1989', 'Rua 901', '(11)2398-2398', '(11)92363-8399', '93847-938', '982.127.189-64', '11.548.852.7', 'ijk@abc.com'),
+(10, 'Mário', '123', '09/07/1988', 'Rua 012', '(11)2099-2788', '(11)94673-1828', '17263-748', '289.489.093-90', '13.856.747-9', 'jkl@abc.com')
 
 INSERT INTO permissao(id_permissao, nm_permissao, lista_permissoes) VALUES
 (1, 'Administrador', 'adm; atd; etq'),
 (2, 'Atendente', 'atd; etq'),
 (3, 'Estoquista','etq')
 
-INSERT INTO funcionario(id_funcionario, id_permissao, nome, senha, dt_nascim, endereco, telefone, celular, cep, cpf, email) VALUES
-(1, 1, 'Rita', '123', '05/07/1970', 'Rua abc', '(11)3782-0929', '(11)94893-3878', '01918-019', '898.234.824-83', 'rita@abc.com'),
-(2, 1, 'Rúbia', '123', '31/07/1980', 'Rua bcd', '(11)3453-0929', '(11)99938-1102', '01343-439', '898.238.298-57', 'rubia@abc.com'),
-(3, 1, 'Claudio', '123', '24/02/1972', 'Rua cde', '(11)2289-0929', '(11)92988-2993', '01323-019', '328.838.928-70', 'claudio@abc.com'),
-(4, 2, 'Lúcia', '123', '05/08/1976', 'Rua def', '(11)2930-0929', '(11)92923-8393', '33318-390', '129.832.838-38', 'lucia@abc.com'),
-(5, 2, 'João', '123', '04/03/1983', 'Rua efg', '(11)2918-0929', '(11)92039-1099', '01323-109', '647.763.872-83', 'joao@abc.com'),
-(6, 2, 'Maria', '123', '16/11/1980', 'Rua fgh', '(11)2010-0929', '(11)93983-3300', '01238-129', '278.88.672-83', 'neusa@abc.com'),
-(8, 3, 'Paulo', '123', '15/07/1989', 'Rua hij', '(11)3398-0929', '(11)99090-3198', '11912-129', '784.978.478-80', 'maria@abc.com'),
-(7, 2, 'Neusa', '123', '19/12/1977', 'Rua ghi', '(11)3893-0929', '(11)94109-3838', '32318-192', '738.929.273.93', 'paulo@abc.com'),
-(9, 3, 'Moisés', '123', '22/03/1991', 'Rua ijk', '(11)3390-0929', '(11)91822-8939', '19288-192', '783.939.376-48', 'moises@abc.com'),
-(10, 3, 'Cíntia', '123', '28/01/1972', 'Rua jkl', '(11)3902-0929', '(11)95988-1178', '29389-837', '128.721.472-17', 'cintia@abc.com')
+INSERT INTO funcionario(id_funcionario, id_permissao, nome, senha, dt_nascim, endereco, telefone, celular, cep, cpf, rg, email) VALUES
+(1, 1, 'Rita', '123', '05/07/1970', 'Rua abc', '(11)3782-0929', '(11)94893-3878', '01918-019', '898.234.824-83', '17.859.968-8', 'rita@abc.com'),
+(2, 1, 'Rúbia', '123', '31/07/1980', 'Rua bcd', '(11)3453-0929', '(11)99938-1102', '01343-439', '898.238.298-57', '11.758.858-4', 'rubia@abc.com'),
+(3, 1, 'Claudio', '123', '24/02/1972', 'Rua cde', '(11)2289-0929', '(11)92988-2993', '01323-019', '328.838.928-70', '39.969.851-9', 'claudio@abc.com'),
+(4, 2, 'Lúcia', '123', '05/08/1976', 'Rua def', '(11)2930-0929', '(11)92923-8393', '33318-390', '129.832.838-38', '21.859.871-1', 'lucia@abc.com'),
+(5, 2, 'João', '123', '04/03/1983', 'Rua efg', '(11)2918-0929', '(11)92039-1099', '01323-109', '647.763.872-83', '41.856.412-9', 'joao@abc.com'),
+(6, 2, 'Maria', '123', '16/11/1980', 'Rua fgh', '(11)2010-0929', '(11)93983-3300', '01238-129', '278.88.672-83', '14.845.966-9', 'neusa@abc.com'),
+(8, 3, 'Paulo', '123', '15/07/1989', 'Rua hij', '(11)3398-0929', '(11)99090-3198', '11912-129', '784.978.478-80', '25.847.412-2', 'maria@abc.com'),
+(7, 2, 'Neusa', '123', '19/12/1977', 'Rua ghi', '(11)3893-0929', '(11)94109-3838', '32318-192', '738.929.273.93', '17.854.992-1', 'paulo@abc.com'),
+(9, 3, 'Moisés', '123', '22/03/1991', 'Rua ijk', '(11)3390-0929', '(11)91822-8939', '19288-192', '783.939.376-48', '87.142.769-3', 'moises@abc.com'),
+(10, 3, 'Cíntia', '123', '28/01/1972', 'Rua jkl', '(11)3902-0929', '(11)95988-1178', '29389-837', '128.721.472-17', '32.843.913-7', 'cintia@abc.com')
 
 INSERT INTO lugar(id_lugar, nome_lugar, endereco, cep, qnt_max) VALUES
 (1, 'Chácara', 'Rua aaa', '09383-039', 2000),

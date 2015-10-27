@@ -6,6 +6,7 @@ GO
 USE eclair
 GO
 
+
 CREATE TABLE mensagem(
 	id_mensagem INT PRIMARY KEY,
 	conteudo VARCHAR(300),
@@ -159,7 +160,6 @@ CREATE TABLE pacote(
 )
 GO
 
-
 CREATE TABLE produto_pacote(
 	id_pacote INT FOREIGN KEY REFERENCES pacote(id_pacote),
 	id_produto INT FOREIGN KEY REFERENCES produto(id_produto),
@@ -302,18 +302,18 @@ INSERT INTO produto(id_produto, nm_produto, preço, quantidade, tipo_produto) VA
 (26, 'Bexigas coloridas', 0.10, 1000, 'consumivel'),
 (27, 'Decoração para mesa', 1.1, 1000, 'consumivel'),
 (28, 'Guardanapo', 0.50, 1000, 'consumivel'),
-(29, 'Prato', 1.1, 1000, 'consumivel'),
-(30, 'Copo', 1.1, 1000, 'consumivel'),
-(31, 'Talher', 1.1, 1000, 'consumivel'),
-(32, 'Toalha', 1.1, 1000, 'consumivel'),
-(33, 'Cadeira', 1.1, 1000, 'consumivel'),
-(34, 'Mesa', 1.1, 1000, 'consumivel'),
-(35, 'Flores', 1.1, 1000, 'consumivel'),
-(36, 'Lanterna', 1.1, 1000, 'consumivel'),
-(37, 'Glow sticks', 1.1, 1000, 'consumivel'),
-(38, 'Feijoada', 1.1, 1000, 'perecivel'),
-(39, 'Escondidinho de queijo', 1.1, 1000, 'perecivel'),
-(40, 'Macarrão ao molho branco', 1.1, 1000, 'perecivel')
+(29, 'Prato', 15.00, 1000, 'consumivel'),
+(30, 'Copo', 10,00, 1000, 'consumivel'),
+(31, 'Talher', 5,00, 1000, 'consumivel'),
+(32, 'Toalha', 5.00, 1000, 'consumivel'),
+(33, 'Cadeira', 50.00, 1000, 'consumivel'),
+(34, 'Mesa', 100.00, 1000, 'consumivel'),
+(35, 'Flores', 10.00, 1000, 'consumivel'),
+(36, 'Lanterna', 10.00, 1000, 'consumivel'),
+(37, 'Glow sticks', 50.00, 1000, 'consumivel'),
+(38, 'Feijoada', 10.00, 1000, 'perecivel'),
+(39, 'Escondidinho de queijo', 10.00, 1000, 'perecivel'),
+(40, 'Macarrão ao molho branco', 10.00, 1000, 'perecivel')
 
 INSERT INTO fornecedor_perecivel(id_fornecedor_perecivel, empresa, endereco, telefone, celular, cnpj, email, website, representante) VALUES
 (1, 'abc', 'Rua 123', '(11)5852-8565', '(11)95856-8457', '78.425.986/0036-15', 'abcd@abc.com', 'www.abc.com', 'Jorge')
@@ -427,6 +427,3 @@ INSERT INTO evento(id_evento, id_lugar, id_cliente, id_funcionario, valor_orcame
 (8, 2, 2, 1, 15000.00, 800, '08/04/2016', 2, 'Festa de criança', 'abc@abc.com', '27/11/2015', '19:00:00'),
 (9, 2, 2, 1, 15000.00, 500, '09/04/2016', 2, 'Festa de criança', 'abc@abc.com', '28/11/2015', '19:00:00'),
 (10, 1, 1, 1, 15000.00, 1000, '10/04/2016', 2, 'Casamento', 'abc@abc.com', '29/11/2015', '19:00:00')
-
-
-SELECT * FROM produto

@@ -66,7 +66,7 @@ GO
 CREATE TABLE produto(
 	id_produto INT PRIMARY KEY,
 	nm_produto VARCHAR(50),
-	preço DECIMAL(6,2),
+	preco DECIMAL(6,2),
 	quantidade INT,
 	tipo_produto VARCHAR(20)
 )
@@ -273,7 +273,7 @@ INSERT INTO lugar(id_lugar, nome_lugar, endereco, cep, qnt_max) VALUES
 (1, 'Chácara', 'Rua aaa', '09383-039', 2000),
 (2, 'Salão', 'Rua bbb', '28989-299', 800)
 
-INSERT INTO produto(id_produto, nm_produto, preço, quantidade, tipo_produto) VALUES
+INSERT INTO produto(id_produto, nm_produto, preco, quantidade, tipo_produto) VALUES
 (1, 'Pastel', 1.40, 1000, 'perecivel'),
 (2, 'Coxinha', 0.14, 1000, 'perecivel'),
 (3, 'Bolinha de queijo', 0.12, 1000, 'perecivel'),
@@ -374,6 +374,57 @@ INSERT INTO pacote(id_pacote, nome, decoracao) VALUES
 (2, 'Festa de criança', 'Infantil'),
 (3, 'Rave', 'Balada'),
 (4, 'Festa de 15 anos', '15 anos')
+
+INSERT INTO produto_pacote(id_pacote, id_produto, qnt_produto) VALUES
+(1, 1, 200),
+(1, 2, 500),
+(1, 3, 400),
+(1, 7, 450),
+(1, 9, 800),
+(1, 11, 800),
+(1, 17, 900),
+(1, 18, 900),
+(1, 19, 500),
+(1, 22, 300),
+(1, 39, 300),
+(1, 40, 300),
+(2, 1, 500),
+(2, 2, 500),
+(2, 3, 500),
+(2, 4, 200),
+(2, 5, 140),
+(2, 6, 400),
+(2, 7, 100),
+(2, 9, 500),
+(2, 10, 200),
+(2, 11, 500),
+(2, 12, 700),
+(2, 13, 250),
+(2, 14, 100),
+(2, 15, 100),
+(2, 16, 200),
+(2, 17, 100),
+(2, 18, 300),
+(2, 19, 150),
+(2, 26, 200),
+(3, 18, 400),
+(3, 22, 200),
+(3, 1, 250),
+(3, 2, 500),
+(3, 3, 340),
+(3, 4, 500),
+(4, 1, 300),
+(4, 2, 300),
+(4, 3, 300),
+(4, 4, 200),
+(4, 6, 250),
+(4, 7, 100),
+(4, 9, 250),
+(4, 10, 100),
+(4, 11, 250),
+(4, 18, 270),
+(4, 19, 190),
+(4, 22, 100)
 
 INSERT INTO contas(id_conta, nm_conta, vencimento, valor_conta, cod_conta) VALUES
 (1, 'Luz', '30/12/2015', 1000.00, '52451224854125854878542158874582521598754821596542'),

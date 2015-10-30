@@ -23,8 +23,8 @@ CREATE TABLE cliente(
 	telefone CHAR(13),--(00)0000-0000
 	celular CHAR(14),--(00)90000-0000
 	cep CHAR(9), --00000-000
-	cpf CHAR(14), --000.000.000-00
-	rg CHAR(12), --00.000.000-0
+	cpf_cnpj CHAR(18), --000.000.000-00
+	rg_ie CHAR(12), --00.000.000-0
 	uf CHAR(2),
 	email VARCHAR(254)
 )
@@ -47,8 +47,8 @@ CREATE TABLE funcionario(
 	telefone CHAR(13),
 	celular CHAR(14),
 	cep CHAR(9),
-	cpf CHAR(14),
-	rg CHAR(12),
+	cpf_cnpj CHAR(18),
+	rg_ie CHAR(12),
 	uf CHAR(2),
 	email VARCHAR(254)
 )
